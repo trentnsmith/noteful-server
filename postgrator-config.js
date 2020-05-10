@@ -1,4 +1,4 @@
-request('dotenv').config();
+require('dotenv').config();
 
 module.exports = {
     "migrationsDirectory": "migrations",
