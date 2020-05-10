@@ -1,6 +1,8 @@
 const FoldersService = {
     getAllFolders(db) {
-        return db.select('*').from('noteful_folders');
+        return db
+            .select('*')
+            .from('noteful_folders');
     },
 
     getById(db, id) {
