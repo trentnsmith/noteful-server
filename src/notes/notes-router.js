@@ -58,4 +58,16 @@ notesRouter
     })
     .get((res, res, next) => {
         res.json(res.note)
-    })    
+    })
+    .delete((res, res, next) => {
+        NotesService.deleteNote(
+            req.app.get('db'),
+            req.params.note_id
+        )
+        .then(() => {
+            res.status(204).end()
+        })
+        .catch(next)
+    })
+    
+    module.exports = notesRouter
