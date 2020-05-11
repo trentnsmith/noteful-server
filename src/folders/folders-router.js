@@ -4,12 +4,17 @@ const FoldersService = require('./folders-service');
 const foldersRouter = express.Router();
 const jsonParser = express.json();
 
+const serializeFolder = folder => ({
+    id: folder.id,
+    folder_name: folder.folder_name
+})
+
 foldersRouter
     .route('/')
     .get((req, res, next) => {
         FoldersService.getAllFolders(req.app.get('db'))
         .then(folders => {
-            return res.json(folders);
+            return res.json(folders.map(serializeFolder));
         })
         .catch(next)
     })
@@ -33,7 +38,7 @@ foldersRouter
             res
                 .status(201)
                 .location(path.posix.join(req.originalUrl, `/${folder.id}`))
-                .json(folder)
+                .json(serializeFolder(folder))
         })
         .catch(next)
     })
@@ -58,7 +63,7 @@ foldersRouter
         .catch(next)
     })
     .get((req, res, next) => {
-        res.json(res.folder)
+        res.json(serializeFolder(res.folder))
     })
     .delete((req, res, next) => {
         FoldersService.deleteFolder(
@@ -70,5 +75,29 @@ foldersRouter
         })
         .catch(next)
     })
+    .patch(jsonParser, (req, res, next) => {
+        const { folder_name } = req.body;
+        const folderToUpdate = { folder_name };
+    
+        const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length;
+        if (numberOfValues === 0)
+          return res.status(400).json({
+            error: {
+              message: `Request body must contain 'folder name'`
+            }
+          });
+    
+        FoldersService.updateFolder(
+          req.app.get('db'),
+          req.params.folder_id,
+          folderToUpdate
+        )
+          .then(numRowsAffected => {
+            res.status(204).end()
+          })
+          .catch(next)
+      })
+
+
 
 module.exports = foldersRouter
