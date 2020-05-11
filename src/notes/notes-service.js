@@ -13,7 +13,7 @@ const NotesService = {
             .first();
     },
 
-    deleteFolder(db, id) {
+    deleteNote(db, id) {
         return db
             .select('*')
             .from('noteful_notes')
@@ -21,7 +21,7 @@ const NotesService = {
             .delete();
     },
 
-    updateFolder(db, id, updateFields) {
+    updateNote(db, id, updateFields) {
         return db
             .select('*')
             .from('noteful_notes')
@@ -29,7 +29,7 @@ const NotesService = {
             .update(updateFields);
     },
 
-    createFolder(db, note) {
+    createNote(db, note) {
         return db
             .insert(note)
             .into('noteful_notes')

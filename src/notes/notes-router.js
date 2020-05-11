@@ -8,7 +8,8 @@ const serializeNote = note => ({
     id: note.id,
     note_name: note.note_name,
     content: note.content,
-    folder_id: note.folder_id
+    folder_id: note.folder_id,
+    modified: note.modified
 })
 
 notesRouter
@@ -32,7 +33,7 @@ notesRouter
             }
         }
 
-        NotesService.insertNote(
+        NotesService.createNote(
             req.app.get('db'),
             newNote
         )
