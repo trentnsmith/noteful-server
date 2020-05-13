@@ -26,7 +26,7 @@ app.use('/api/notes', notesRouter)
 
 
 app.get('/', (req, res) => {
-    return res.send('hello world');
+    return res.status(200).end();
 })
 
 app.use(function errorHandler(error, req, res, next) {
